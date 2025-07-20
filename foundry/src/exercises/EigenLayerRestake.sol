@@ -51,6 +51,11 @@ contract EigenLayerRestake {
     ///      and then deposits it into the EigenLayer strategy. The user receives shares in return.
     function deposit(uint256 rethAmount) external returns (uint256 shares) {
         // Write your code here
+        reth.transferFrom(msg.sender, address(this), rethAmount);
+        reth.approve(address(strategyManager), rethAmount);
+        shares = strategyManager.depositIntoStrategy(
+            address(strategy), address(reth), rethAmount
+        );
     }
 
     /// @notice Delegate staking to a specific operator
